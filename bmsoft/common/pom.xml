@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.bmsoft</groupId>
+    <artifactId>bmsoft</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>common</artifactId>
+  <name>common</name>
+  <description>public package</description>
+  <packaging>pom</packaging>
+  
+  
+  <properties>
+      <knife4j.version>2.0.2</knife4j.version>
+      <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
+      <swagger.version>1.5.21</swagger.version>
+  </properties>
+  
+  <modules>
+  	<module>common-base</module>
+  	<module>common-jwt</module>
+  	<module>common-redis</module>
+  	<module>common-swagger2-starter</module>
+  </modules>
+  
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>com.bmsoft</groupId>
+  			<artifactId>common-base</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.bmsoft</groupId>
+  			<artifactId>common-jwt</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.bmsoft</groupId>
+  			<artifactId>common-redis</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<!-- swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-bean-validators</artifactId>
+            <version>${springfox.swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-core</artifactId>
+            <version>${springfox.swagger2.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.github.xiaoymin</groupId>
+        	<artifactId>knife4j-spring-boot-starter</artifactId>
+        	<version>${knife4j.version}</version>
+        </dependency>
+  	</dependencies>
+  </dependencyManagement>
+</project>

@@ -1,0 +1,31 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+     discovery:
+        locator:
+         enabled: true
+     globalcors:                     #跨域配置
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            exposedHeaders:
+              - content-type
+            allowedHeaders:
+              - content-type
+            allowCredentials: true
+            allowedMethods: 
+              - GET
+              - OPTIONS
+              - PUT
+              - DELETE
+              - POST
+    nacos: 
+     discovery: 
+       server-addr: 192.168.3.221:8848
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
