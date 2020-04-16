@@ -40,10 +40,16 @@
   		<groupId>com.bmsoft</groupId>
   		<artifactId>common-jwt</artifactId>
   	</dependency>
+  	<!--  
   	<dependency>
   		<groupId>com.bmsoft</groupId>
   		<artifactId>common-redis</artifactId>
   	</dependency>
+  	-->
+  	<dependency>
+        <groupId>com.bmsoft</groupId>
+        <artifactId>common-j2cache-starter</artifactId>
+    </dependency>
   	<dependency>
   		<groupId>com.bmsoft</groupId>
   		<artifactId>common-swagger2-starter</artifactId>

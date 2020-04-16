@@ -156,6 +156,13 @@
         	<artifactId>common-swagger2-starter</artifactId>
         	<version>${project.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.bmsoft</groupId>
+            <artifactId>common-j2cache-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
         <dependency>
         	<groupId>com.github.xiaoymin</groupId>
         	<artifactId>knife4j-spring-ui</artifactId>

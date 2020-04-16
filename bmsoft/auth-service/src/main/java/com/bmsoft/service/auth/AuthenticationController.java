@@ -13,7 +13,6 @@ import com.bmsoft.common.base.R;
 import com.bmsoft.common.exception.code.ExceptionCode;
 import com.bmsoft.common.jwt.JwtToken;
 import com.bmsoft.common.jwt.UserAuth;
-import com.bmsoft.common.redis.RedisUtil;
 import com.bmsoft.service.auth.dto.LoginParamDTO;
 
 import io.swagger.annotations.Api;
@@ -22,6 +21,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import net.oschina.j2cache.CacheChannel;
 
 @RestController
 @RequestMapping(value="/auth")
@@ -35,7 +35,7 @@ public class AuthenticationController {
 	private JwtToken jwt;
 	
 	@Autowired
-	private RedisUtil redis;
+	private CacheChannel cache;
 	
 	private final String REFRESH_TOKEN_KEY = "refresh_token";
 	
@@ -71,7 +71,8 @@ public class AuthenticationController {
 		if (null == user)
 			return R.fail(ExceptionCode.JWT_USER_INVALID);
 		Map<String, String> data = jwt.generateUserToken(user);
-		redis.hset(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId(), data.get(JwtToken.GRANT_REFRESH));
+		//redis.hset(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId(), data.get(JwtToken.GRANT_REFRESH));
+		cache.set(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId(), data.get(JwtToken.GRANT_REFRESH));
 		return R.success(data);
 	}
 	
@@ -91,7 +92,8 @@ public class AuthenticationController {
 			return R.fail(ExceptionCode.JWT_TOKEN_EXPIRED);
 		}
 		//检查redis中的refreshtoken,存在切相等，则给与刷新
-		String rrs = (String)redis.hget(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId());
+		//String rrs = (String)redis.hget(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId());
+		String rrs = cache.get(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId()).asString();
 		//不存在则为无效，需要登录
 		if (null == rrs || !rrs.equals(refreshToken))
 			return R.fail(ExceptionCode.JWT_TOKEN_INVAILD);
