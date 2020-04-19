@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bmsoft.common.base.R;
+import com.bmsoft.common.base.constant.CacheKey;
 import com.bmsoft.common.exception.code.ExceptionCode;
 import com.bmsoft.common.jwt.JwtToken;
 import com.bmsoft.common.jwt.UserAuth;
@@ -36,8 +37,6 @@ public class AuthenticationController {
 	
 	@Autowired
 	private CacheChannel cache;
-	
-	private final String REFRESH_TOKEN_KEY = "refresh_token";
 	
 	@ApiOperation(value="用户登录", notes="用户名密码登录验证")
 	@ApiResponses(value={
@@ -72,7 +71,7 @@ public class AuthenticationController {
 			return R.fail(ExceptionCode.JWT_USER_INVALID);
 		Map<String, String> data = jwt.generateUserToken(user);
 		//redis.hset(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId(), data.get(JwtToken.GRANT_REFRESH));
-		cache.set(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId(), data.get(JwtToken.GRANT_REFRESH));
+		cache.set(CacheKey.REFRESH_TOKEN, user.getClient() + ":" + user.getUserId(), data.get(JwtToken.GRANT_REFRESH));
 		return R.success(data);
 	}
 	
@@ -93,7 +92,7 @@ public class AuthenticationController {
 		}
 		//检查redis中的refreshtoken,存在切相等，则给与刷新
 		//String rrs = (String)redis.hget(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId());
-		String rrs = cache.get(REFRESH_TOKEN_KEY, user.getClient() + ":" + user.getUserId()).asString();
+		String rrs = cache.get(CacheKey.REFRESH_TOKEN, user.getClient() + ":" + user.getUserId()).asString();
 		//不存在则为无效，需要登录
 		if (null == rrs || !rrs.equals(refreshToken))
 			return R.fail(ExceptionCode.JWT_TOKEN_INVAILD);
